@@ -19,7 +19,7 @@ class AuthProvider extends ChangeNotifier {
   bool get isLoading => _isLoading;
   bool get isInitialized => _isInitialized;
   bool get isAdmin => _userModel?.isAdmin ?? false;
-  bool get needsProfile => _firebaseUser != null && (_userModel?.roomNumber.isEmpty ?? true);
+  bool get needsProfile => _isInitialized && _firebaseUser != null && (_userModel == null || _userModel!.roomNumber.isEmpty);
   String? get errorMessage => _errorMessage;
 
   AuthProvider() {
@@ -28,37 +28,38 @@ class AuthProvider extends ChangeNotifier {
 
   Future<void> _onAuthStateChanged(User? user) async {
     _firebaseUser = user;
+    _userModel = null;
+    _isInitialized = false;
+    notifyListeners();
+
     if (user != null) {
       try {
         final doc = await _db.collection('users').doc(user.uid).get();
         if (doc.exists) {
           _userModel = UserModel.fromMap(doc.data()!, user.uid);
         } else {
-          final newUser = UserModel(uid: user.uid, email: user.email ?? '',
-            name: user.displayName ?? 'User', roomNumber: '', dormName: '');
+          final newUser = UserModel(
+            uid: user.uid,
+            email: user.email ?? '',
+            name: user.displayName ?? 'User',
+            roomNumber: '',
+            dormName: '');
           await _db.collection('users').doc(user.uid).set(newUser.toMap());
           _userModel = newUser;
         }
-      } catch (_) {}
-    } else {
-      _userModel = null;
+      } catch (e) {
+        debugPrint('Error loading user: $e');
+      }
     }
+
     _isInitialized = true;
     notifyListeners();
   }
-
-  Future<bool> login({required String email, required String password}) async {
-    _setLoading(true); _errorMessage = null;
-    try {
-      await _auth.signInWithEmailAndPassword(email: email, password: password);
-      return true;
-    } on FirebaseAuthException catch (e) {
-      _errorMessage = _msg(e.code); return false;
-    } finally { _setLoading(false); }
-  }
+  
 
   Future<bool> signInWithGoogle() async {
-    _setLoading(true); _errorMessage = null;
+    _setLoading(true);
+    _errorMessage = null;
     try {
       if (kIsWeb) {
         await _auth.signInWithPopup(GoogleAuthProvider());
@@ -71,10 +72,14 @@ class AuthProvider extends ChangeNotifier {
       }
       return true;
     } on FirebaseAuthException catch (e) {
-      _errorMessage = _msg(e.code); return false;
+      _errorMessage = _msg(e.code);
+      return false;
     } catch (e) {
-      _errorMessage = 'Google sign-in failed. Please try again.'; return false;
-    } finally { _setLoading(false); }
+      _errorMessage = 'Google sign-in failed. Please try again.';
+      return false;
+    } finally {
+      _setLoading(false);
+    }
   }
 
   Future<bool> register({required String email, required String password,

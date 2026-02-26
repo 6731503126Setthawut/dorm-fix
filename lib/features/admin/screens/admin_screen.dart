@@ -14,6 +14,11 @@ class AdminScreen extends StatefulWidget {
 
 class _AdminScreenState extends State<AdminScreen> {
   RequestStatus? _filter;
+  final _searchCtrl = TextEditingController();
+  String _search = '';
+
+  @override
+  void dispose() { _searchCtrl.dispose(); super.dispose(); }
 
   @override
   Widget build(BuildContext context) {
@@ -27,6 +32,25 @@ class _AdminScreenState extends State<AdminScreen> {
           onPressed: () => context.pop()),
       ),
       body: Column(children: [
+        // Search Bar
+        Padding(padding: const EdgeInsets.fromLTRB(16, 12, 16, 0),
+          child: TextField(
+            controller: _searchCtrl,
+            onChanged: (v) => setState(() => _search = v.toLowerCase()),
+            decoration: InputDecoration(
+              hintText: 'Search by title, room, dorm...',
+              hintStyle: const TextStyle(color: Color(0xFFB0B8C8), fontSize: 14),
+              prefixIcon: const Icon(Icons.search_rounded, color: Color(0xFFB0B8C8), size: 20),
+              suffixIcon: _search.isNotEmpty
+                ? IconButton(icon: const Icon(Icons.clear_rounded, size: 18, color: Color(0xFFB0B8C8)),
+                    onPressed: () { _searchCtrl.clear(); setState(() => _search = ''); })
+                : null,
+              filled: true, fillColor: Colors.white,
+              border: OutlineInputBorder(borderRadius: BorderRadius.circular(14), borderSide: BorderSide.none),
+              enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(14), borderSide: BorderSide.none),
+              contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12)))),
+
+        // Filter chips
         SizedBox(height: 48, child: ListView.separated(
           padding: const EdgeInsets.fromLTRB(16, 8, 16, 0),
           scrollDirection: Axis.horizontal,
@@ -48,6 +72,8 @@ class _AdminScreenState extends State<AdminScreen> {
                   style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600,
                     color: sel ? Colors.white : const Color(0xFF80868B)))));
           })),
+
+        // List
         Expanded(child: StreamBuilder<List<RequestModel>>(
           stream: provider.allRequestsStream(),
           builder: (context, snap) {
@@ -55,12 +81,20 @@ class _AdminScreenState extends State<AdminScreen> {
               return const Center(child: CircularProgressIndicator());
             }
             final all = snap.data ?? [];
-            final filtered = _filter == null ? all : all.where((r) => r.status == _filter).toList();
+            var filtered = _filter == null ? all : all.where((r) => r.status == _filter).toList();
+            if (_search.isNotEmpty) {
+              filtered = filtered.where((r) =>
+                r.title.toLowerCase().contains(_search) ||
+                r.description.toLowerCase().contains(_search) ||
+                r.roomNumber.toLowerCase().contains(_search) ||
+                r.category.label.toLowerCase().contains(_search)).toList();
+            }
             final pending = all.where((r) => r.status == RequestStatus.pending).length;
             final inProgress = all.where((r) => r.status == RequestStatus.inProgress).length;
             final resolved = all.where((r) => r.status == RequestStatus.resolved).length;
+
             return Column(children: [
-              Padding(padding: const EdgeInsets.fromLTRB(16, 12, 16, 0), child: Row(children: [
+              Padding(padding: const EdgeInsets.fromLTRB(16, 8, 16, 0), child: Row(children: [
                 _StatCard(label: 'Total', count: all.length, color: const Color(0xFF1A73E8)),
                 const SizedBox(width: 8),
                 _StatCard(label: 'Pending', count: pending, color: const Color(0xFFF29900)),
@@ -70,10 +104,16 @@ class _AdminScreenState extends State<AdminScreen> {
                 _StatCard(label: 'Resolved', count: resolved, color: const Color(0xFF34A853)),
               ])),
               Expanded(child: filtered.isEmpty
-                ? const Center(child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-                    Text('📭', style: TextStyle(fontSize: 56)),
-                    SizedBox(height: 16),
-                    Text('No requests', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700))]))
+                ? Center(child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+                    Text(_search.isNotEmpty || _filter != null ? '🔍' : '📭',
+                      style: const TextStyle(fontSize: 56)),
+                    const SizedBox(height: 16),
+                    Text(_search.isNotEmpty || _filter != null ? 'No results found' : 'No requests yet',
+                      style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w700)),
+                    if (_search.isNotEmpty) ...[
+                      const SizedBox(height: 8),
+                      const Text('Try a different keyword', style: TextStyle(color: Color(0xFF80868B)))],
+                  ]))
                 : ListView.separated(
                     padding: const EdgeInsets.fromLTRB(16, 12, 16, 32),
                     itemCount: filtered.length,
