@@ -19,6 +19,7 @@ class AuthProvider extends ChangeNotifier {
   bool get isLoading => _isLoading;
   bool get isInitialized => _isInitialized;
   bool get isAdmin => _userModel?.isAdmin ?? false;
+  bool get needsProfile => _firebaseUser != null && (_userModel?.roomNumber.isEmpty ?? true);
   String? get errorMessage => _errorMessage;
 
   AuthProvider() {
@@ -33,13 +34,8 @@ class AuthProvider extends ChangeNotifier {
         if (doc.exists) {
           _userModel = UserModel.fromMap(doc.data()!, user.uid);
         } else {
-          // Google login ครั้งแรก สร้าง user doc อัตโนมัติ
-          final newUser = UserModel(
-            uid: user.uid,
-            email: user.email ?? '',
-            name: user.displayName ?? 'User',
-            roomNumber: '',
-          );
+          final newUser = UserModel(uid: user.uid, email: user.email ?? '',
+            name: user.displayName ?? 'User', roomNumber: '', dormName: '');
           await _db.collection('users').doc(user.uid).set(newUser.toMap());
           _userModel = newUser;
         }
@@ -52,63 +48,56 @@ class AuthProvider extends ChangeNotifier {
   }
 
   Future<bool> login({required String email, required String password}) async {
-    _setLoading(true);
-    _errorMessage = null;
+    _setLoading(true); _errorMessage = null;
     try {
       await _auth.signInWithEmailAndPassword(email: email, password: password);
       return true;
     } on FirebaseAuthException catch (e) {
-      _errorMessage = _msg(e.code);
-      return false;
-    } finally {
-      _setLoading(false);
-    }
+      _errorMessage = _msg(e.code); return false;
+    } finally { _setLoading(false); }
   }
 
   Future<bool> signInWithGoogle() async {
-    _setLoading(true);
-    _errorMessage = null;
+    _setLoading(true); _errorMessage = null;
     try {
       if (kIsWeb) {
-        final provider = GoogleAuthProvider();
-        await _auth.signInWithPopup(provider);
+        await _auth.signInWithPopup(GoogleAuthProvider());
       } else {
         final googleUser = await GoogleSignIn().signIn();
         if (googleUser == null) { _setLoading(false); return false; }
         final googleAuth = await googleUser.authentication;
-        final credential = GoogleAuthProvider.credential(
-          accessToken: googleAuth.accessToken,
-          idToken: googleAuth.idToken,
-        );
-        await _auth.signInWithCredential(credential);
+        await _auth.signInWithCredential(GoogleAuthProvider.credential(
+          accessToken: googleAuth.accessToken, idToken: googleAuth.idToken));
       }
       return true;
     } on FirebaseAuthException catch (e) {
-      _errorMessage = _msg(e.code);
-      return false;
+      _errorMessage = _msg(e.code); return false;
     } catch (e) {
-      _errorMessage = 'Google sign-in failed. Please try again.';
-      return false;
-    } finally {
-      _setLoading(false);
-    }
+      _errorMessage = 'Google sign-in failed. Please try again.'; return false;
+    } finally { _setLoading(false); }
   }
 
-  Future<bool> register({required String email, required String password, required String name, required String roomNumber}) async {
-    _setLoading(true);
-    _errorMessage = null;
+  Future<bool> register({required String email, required String password,
+    required String name, required String roomNumber, required String dormName}) async {
+    _setLoading(true); _errorMessage = null;
     try {
       final cred = await _auth.createUserWithEmailAndPassword(email: email, password: password);
-      final user = UserModel(uid: cred.user!.uid, email: email, name: name, roomNumber: roomNumber);
+      final user = UserModel(uid: cred.user!.uid, email: email, name: name,
+        roomNumber: roomNumber, dormName: dormName);
       await _db.collection('users').doc(cred.user!.uid).set(user.toMap());
       await cred.user!.updateDisplayName(name);
       return true;
     } on FirebaseAuthException catch (e) {
-      _errorMessage = _msg(e.code);
-      return false;
-    } finally {
-      _setLoading(false);
-    }
+      _errorMessage = _msg(e.code); return false;
+    } finally { _setLoading(false); }
+  }
+
+  Future<void> updateDormInfo({required String dormName, required String roomNumber}) async {
+    if (_firebaseUser == null) return;
+    await _db.collection('users').doc(_firebaseUser!.uid).update(
+      {'dormName': dormName, 'roomNumber': roomNumber});
+    _userModel = _userModel?.copyWith(dormName: dormName, roomNumber: roomNumber);
+    notifyListeners();
   }
 
   Future<void> logout() async {

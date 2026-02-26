@@ -69,7 +69,7 @@ class _LoginScreenState extends State<LoginScreen> {
           child: SingleChildScrollView(child: Form(key: _formKey, child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
             const Text('Sign In', style: TextStyle(fontSize: 26, fontWeight: FontWeight.w800, color: Color(0xFF202124), letterSpacing: -0.5)),
             const SizedBox(height: 6),
-            const Text('Welcome back!', style: TextStyle(fontSize: 14, color: Color(0xFF80868B))),
+            const Text('Welcome to DormFix', style: TextStyle(fontSize: 14, color: Color(0xFF80868B))),
             const SizedBox(height: 28),
             // Google Button
             OutlinedButton(
@@ -80,7 +80,16 @@ class _LoginScreenState extends State<LoginScreen> {
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                 backgroundColor: Colors.white),
               child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                Image.network('https://www.google.com/favicon.ico', width: 20, height: 20),
+                  Container(
+                      width: 20, height: 20,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(4)),
+                      child: const Center(
+                        child: Text('G', style: TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w700,
+                          color: Color(0xFF1A73E8))))),
                 const SizedBox(width: 10),
                 const Text('Continue with Google', style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600, color: Color(0xFF202124))),
               ])),
@@ -97,7 +106,7 @@ class _LoginScreenState extends State<LoginScreen> {
               controller: _emailCtrl,
               keyboardType: TextInputType.emailAddress,
               textInputAction: TextInputAction.next,
-              decoration: const InputDecoration(hintText: 'student@dorm.ac.th', prefixIcon: Icon(Icons.mail_outline_rounded, size: 20)),
+              decoration: const InputDecoration(hintText: '@lamduan.mfu.ac.th', prefixIcon: Icon(Icons.mail_outline_rounded, size: 20)),
               validator: (v) => v == null || v.isEmpty ? 'Please enter your email' : null),
             const SizedBox(height: 16),
             const Text('Password', style: TextStyle(fontSize: 13, fontWeight: FontWeight.w700)),
