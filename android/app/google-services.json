@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "186090767131",
+    "project_id": "dormfix-6719d",
+    "storage_bucket": "dormfix-6719d.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:186090767131:android:81f856dc676d4ac6b789be",
+        "android_client_info": {
+          "package_name": "com.example.dormfix"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCQQPrXYmSvrsJtMcqs0PeSJA6dSWD8YRU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,10 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:provider/provider.dart';
 import 'core/app_router.dart';
+import 'core/firebase_options.dart';
+import 'features/auth/providers/auth_provider.dart';
 import 'features/requests/providers/request_provider.dart';
-// ignore_for_file: deprecated_member_use
+import 'features/notifications/services/notification_service.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  if (!kIsWeb) {
+    try {
+      await NotificationService.initialize();
+    } catch (_) {}
+  }
   runApp(const DormFixApp());
 }
 
@@ -15,6 +26,7 @@ class DormFixApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
+        ChangeNotifierProvider(create: (_) => AuthProvider()),
         ChangeNotifierProvider(create: (_) => RequestProvider()),
       ],
       child: MaterialApp.router(
@@ -31,34 +43,21 @@ class AppTheme {
   AppTheme._();
 
   static const Color primary = Color(0xFF1A73E8);
-  static const Color primaryDark = Color(0xFF1557B0);
-  static const Color secondary = Color(0xFF34A853);
-  static const Color warning = Color(0xFFFBBC04);
-  static const Color error = Color(0xFFEA4335);
+
   static const Color surface = Color(0xFFF8F9FA);
   static const Color onSurface = Color(0xFF202124);
   static const Color outline = Color(0xFFDADCE0);
 
   static ThemeData get light => ThemeData(
         useMaterial3: true,
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: primary,
-          brightness: Brightness.light,
-        ),
+        colorScheme: ColorScheme.fromSeed(seedColor: primary),
         scaffoldBackgroundColor: surface,
-        fontFamily: 'Nunito',
+        
         appBarTheme: const AppBarTheme(
           backgroundColor: Colors.white,
           foregroundColor: onSurface,
           elevation: 0,
-          centerTitle: false,
-          titleTextStyle: TextStyle(
-            fontFamily: 'Nunito',
-            fontSize: 20,
-            fontWeight: FontWeight.w700,
-            color: onSurface,
-            letterSpacing: -0.3,
-          ),
+          titleTextStyle: TextStyle(fontSize: 20, fontWeight: FontWeight.w700, color: onSurface),
         ),
         cardTheme: CardThemeData(
           color: Colors.white,
@@ -71,18 +70,9 @@ class AppTheme {
         inputDecorationTheme: InputDecorationTheme(
           filled: true,
           fillColor: Colors.white,
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(12),
-            borderSide: const BorderSide(color: outline),
-          ),
-          enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(12),
-            borderSide: const BorderSide(color: outline),
-          ),
-          focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(12),
-            borderSide: const BorderSide(color: primary, width: 2),
-          ),
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: const BorderSide(color: outline)),
+          enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: const BorderSide(color: outline)),
+          focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: const BorderSide(color: primary, width: 2)),
           contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
         ),
         elevatedButtonTheme: ElevatedButtonThemeData(
@@ -91,11 +81,7 @@ class AppTheme {
             foregroundColor: Colors.white,
             minimumSize: const Size(double.infinity, 52),
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-            textStyle: const TextStyle(
-              fontFamily: 'Nunito',
-              fontSize: 16,
-              fontWeight: FontWeight.w700,
-            ),
+            textStyle: const TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
           ),
         ),
       );
