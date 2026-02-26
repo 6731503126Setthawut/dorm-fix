@@ -1,18 +1,105 @@
-# dormfix
+# 🏠 DormFix
 
-A new Flutter project.
+> **Report dorm issues, fast & easy.**  
+> A real-time maintenance request platform built for dormitory students and staff.
 
-## Getting Started
+![Flutter](https://img.shields.io/badge/Flutter-02569B?style=for-the-badge&logo=flutter&logoColor=white)
+![Firebase](https://img.shields.io/badge/Firebase-FFCA28?style=for-the-badge&logo=firebase&logoColor=black)
+![Cloudinary](https://img.shields.io/badge/Cloudinary-3448C5?style=for-the-badge&logo=cloudinary&logoColor=white)
+![Dart](https://img.shields.io/badge/Dart-0175C2?style=for-the-badge&logo=dart&logoColor=white)
 
-This project is a starting point for a Flutter application.
+---
 
-A few resources to get you started if this is your first Flutter project:
+## What is DormFix?
 
-- [Learn Flutter](https://docs.flutter.dev/get-started/learn-flutter)
-- [Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Flutter learning resources](https://docs.flutter.dev/reference/learning-resources)
+DormFix is a **web application** that simplifies dormitory maintenance reporting.  
+No more calling the front desk, walking downstairs, or getting lost in group chats.
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
-# dorm-fix
+Students submit a request in under **60 seconds** — with a photo, description, and room number.  
+Admin staff receive it instantly and can update progress in real time.
+
+---
+
+## The Problem
+
+| Before DormFix | After DormFix |
+|---|---|
+| Call front desk, no one answers | Submit anytime, anywhere |
+| Staff lose track of requests | All requests in one dashboard |
+| No idea if request was received | Real-time status updates |
+| No record of what was reported | Full request history with timestamps |
+
+---
+
+## ✨ Features
+
+### 👤 For Residents
+- 📝 Submit maintenance requests with title, description & category
+- 📸 Attach photos directly from camera or gallery
+- 📊 Track request status in real time
+- 🔍 Search and filter your requests
+- ❌ Cancel requests when no longer needed
+
+### 🛡️ For Admin Staff
+- 📋 View **all** incoming requests from every room
+- 🔄 Update status: `Pending` → `In Progress` → `Resolved`
+- 💬 Leave admin notes for residents
+- 📈 Dashboard summary with stats
+
+---
+
+## 🛠️ Tech Stack
+
+| Layer | Technology |
+|---|---|
+| 📱 Frontend | Flutter Web |
+| 🔐 Authentication | Firebase Auth (Email + Google Sign-In) |
+| 🗄️ Database | Cloud Firestore |
+| 🖼️ Image Storage | Cloudinary (Free tier) |
+| 🚀 Hosting | Firebase Hosting |
+
+---
+
+## 🗂️ Request Categories
+
+| Icon | Category |
+|---|---|
+| ⚡ | Electrical |
+| 🚿 | Plumbing |
+| ❄️ | Air Conditioning |
+| 🪑 | Furniture |
+| 🌐 | Internet |
+| 🔒 | Security |
+| 🧹 | Cleaning |
+| 📦 | Other |
+
+---
+
+## 📱 Live Demo
+
+🌐 **[dormfix-6719d.web.app](https://dormfix-6719d.web.app)**
+
+| Role | Email | Password |
+|---|---|---|
+| Resident | Student.ID@lamduan.mfu.ac.th | password  |
+| Admin | *(set role in Firestore)* | — |
+
+---
+
+## 📸 Screenshots
+
+> Login Screen · My Requests · Create Request · Admin Dashboard
+
+---
+
+## 👨‍💻 Developer
+
+**Setthawut Sikhiao**  
+Mae Fah Luang University  
+Student ID: 6731503126
+
+---
+
+## 📄 License
+
+This project is built for educational purposes as part of a university lab assignment.
