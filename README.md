@@ -53,7 +53,7 @@ Admin staff receive it instantly and can update progress in real time.
 | Layer | Technology |
 |---|---|
 | 📱 Frontend | Flutter Web |
-| 🔐 Authentication | Firebase Auth (Email + Google Sign-In) |
+| 🔐 Authentication | Firebase Auth (Google Sign-In) |
 | 🗄️ Database | Cloud Firestore |
 | 🖼️ Image Storage | Cloudinary (Free tier) |
 | 🚀 Hosting | Firebase Hosting |
