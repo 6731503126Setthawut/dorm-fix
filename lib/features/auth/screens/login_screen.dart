@@ -42,7 +42,8 @@ class LoginScreen extends StatelessWidget {
               }
             },
             style: OutlinedButton.styleFrom(
-              minimumSize: const Size(double.infinity, 56),
+              minimumSize: const Size(0, 56),
+              padding: const EdgeInsets.symmetric(horizontal: 24),
               backgroundColor: Colors.white,
               side: BorderSide.none,
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16))),

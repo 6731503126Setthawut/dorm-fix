@@ -115,7 +115,7 @@ class _CreateRequestScreenState extends State<CreateRequestScreen> {
         const SizedBox(height: 20),
         _sec('Description', TextFormField(controller: _descCtrl, maxLines: 5, textCapitalization: TextCapitalization.sentences,
           decoration: const InputDecoration(hintText: 'Describe the issue in detail...'),
-          validator: (v) => v == null || v.trim().length < 20 ? 'Please provide more detail (min 20 chars)' : null)),
+          validator: (v) => v == null || v.trim().length <10 ? 'Please provide more detail (min 10 chars)' : null)),
         const SizedBox(height: 20),
         _sec('Photos (Optional)', Column(children: [
           if (_imageBytes.isNotEmpty) ...[

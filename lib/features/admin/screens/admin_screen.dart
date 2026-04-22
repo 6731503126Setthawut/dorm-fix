@@ -49,7 +49,7 @@ class _AdminScreenState extends State<AdminScreen> {
               border: OutlineInputBorder(borderRadius: BorderRadius.circular(14), borderSide: BorderSide.none),
               enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(14), borderSide: BorderSide.none),
               contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12)))),
-
+          
         // Filter chips
         SizedBox(height: 48, child: ListView.separated(
           padding: const EdgeInsets.fromLTRB(16, 8, 16, 0),

@@ -12,7 +12,12 @@
           "package_name": "com.example.dormfix"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "186090767131-vkajbdvggakcdnu03je4h8imgoab8okj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyCQQPrXYmSvrsJtMcqs0PeSJA6dSWD8YRU"
@@ -20,7 +25,55 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "186090767131-vkajbdvggakcdnu03je4h8imgoab8okj.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "186090767131-2gsf045khn09dunntqin7c5g0u574i64.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.dormfix"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:186090767131:android:139affd324f966bcb789be",
+        "android_client_info": {
+          "package_name": "com.setthawut.dormfix"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "186090767131-vkajbdvggakcdnu03je4h8imgoab8okj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCQQPrXYmSvrsJtMcqs0PeSJA6dSWD8YRU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "186090767131-vkajbdvggakcdnu03je4h8imgoab8okj.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "186090767131-2gsf045khn09dunntqin7c5g0u574i64.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.dormfix"
+              }
+            }
+          ]
         }
       }
     }
