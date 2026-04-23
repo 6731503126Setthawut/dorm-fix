@@ -16,9 +16,17 @@ android {
     kotlinOptions {
         jvmTarget = JavaVersion.VERSION_17.toString()
     }
+    signingConfigs {
+        create("release") {
+            keyAlias = System.getenv("KEY_ALIAS") ?: "dormfix"
+            keyPassword = System.getenv("KEY_PASSWORD") ?: "dormfix123"
+            storeFile = file("dormfix.keystore")
+            storePassword = System.getenv("STORE_PASSWORD") ?: "dormfix123"
+        }
+    }
     defaultConfig {
         applicationId = "com.setthawut.dormfix"
-        minSdk = flutter.minSdkVersion
+        minSdk = 21
         targetSdk = 36
         versionCode = flutter.versionCode
         versionName = flutter.versionName
@@ -26,7 +34,7 @@ android {
     }
     buildTypes {
         release {
-            signingConfig = signingConfigs.getByName("debug")
+            signingConfig = signingConfigs.getByName("release")
             isMinifyEnabled = false
             isShrinkResources = false
         }
@@ -37,18 +45,15 @@ android {
                 "META-INF/DEPENDENCIES",
                 "META-INF/LICENSE",
                 "META-INF/LICENSE.txt",
-                "META-INF/license.txt",
                 "META-INF/NOTICE",
                 "META-INF/NOTICE.txt",
-                "META-INF/notice.txt",
                 "META-INF/*.kotlin_module",
                 "META-INF/AL2.0",
                 "META-INF/LGPL2.1"
             )
             pickFirsts += setOf(
                 "META-INF/INDEX.LIST",
-                "META-INF/io.netty.versions.properties",
-                "google/protobuf/*.proto"
+                "META-INF/io.netty.versions.properties"
             )
         }
     }
