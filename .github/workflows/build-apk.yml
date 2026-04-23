@@ -1,4 +1,4 @@
-name: Build APK
+name: Build AAB
 
 on:
   push:
@@ -23,10 +23,20 @@ jobs:
           flutter-version: '3.41.0'
           channel: 'stable'
 
+      - name: Decode Keystore
+        run: |
+          echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 --decode > android/app/dormfix.keystore
+          ls -la android/app/dormfix.keystore
+
       - name: Get dependencies
         run: flutter pub get
 
       - name: Build App Bundle
+        env:
+          KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+          STORE_PASSWORD: ${{ secrets.STORE_PASSWORD }}
+          KEYSTORE_PATH: dormfix.keystore
         run: flutter build appbundle --release --no-pub
 
       - name: Upload AAB
