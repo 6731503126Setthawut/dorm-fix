@@ -28,7 +28,7 @@ android {
         applicationId = "com.setthawut.dormfix"
         minSdk = 21
         targetSdk = 36
-        versionCode = flutter.versionCode
+        versionCode = versionCode = (System.getenv("VERSION_CODE") ?: flutter.versionCode.toString()).toInt()
         versionName = flutter.versionName
         multiDexEnabled = true
     }
