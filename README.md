@@ -103,3 +103,23 @@ Student ID: 6731503126
 ## 📄 License
 
 This project is built for educational purposes as part of a university lab assignment.
+
+# Privacy Policy for DormFix
+
+Last updated: April 24, 2025
+
+## Information We Collect
+We collect information you provide when using DormFix, 
+including maintenance reports and account information.
+
+## How We Use Information
+- To process maintenance requests
+- To send notifications about your requests
+- To improve our services
+
+## Firebase
+We use Firebase for authentication and data storage. 
+Firebase may collect usage data per Google's privacy policy.
+
+## Contact
+If you have questions, contact: your-email@example.com
