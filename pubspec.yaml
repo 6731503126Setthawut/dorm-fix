@@ -1,7 +1,7 @@
 name: Dormfix
 description: Dormitory Maintenance Reporting App
 publish_to: 'none'
-version: 1.0.0+4
+version: 1.0.0+5
 
 environment:
   sdk: '>=3.0.0 <4.0.0'
@@ -41,7 +41,7 @@ dev_dependencies:
 flutter_launcher_icons:
   android: "launcher_icon"
   ios: true
-  image_path: "assets/icon.png"
+  image_path: "assets/icon/icon.png"
 
 flutter:
   uses-material-design: true
