@@ -26,7 +26,7 @@ android {
     }
     defaultConfig {
         applicationId = "com.setthawut.dormfix"
-        minSdk = 21
+        minSdk = flutter.minSdkVersion
         targetSdk = 36
         versionCode = (System.getenv("VERSION_CODE") ?: flutter.versionCode.toString()).toInt()
         versionName = flutter.versionName
