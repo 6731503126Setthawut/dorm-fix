@@ -122,4 +122,4 @@ We use Firebase for authentication and data storage.
 Firebase may collect usage data per Google's privacy policy.
 
 ## Contact
-If you have questions, contact: your-email@example.com
+If you have questions, contact: 6731503126@lamduan.mfu.ac.th
